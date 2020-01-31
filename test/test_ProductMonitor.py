@@ -45,6 +45,14 @@ class TestWebsiteClass(unittest.TestCase):
         #Assert
         self.assertEqual(result, '<p class="availability in-stock">Availability: <span>In stock</span></p>')
 
+    def test_WebsiteCheckInStock(self):
+        #Arrange
+        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        #Act
+        result = site.checkstock()
+        #Assert
+        self.assertEqual(result, True)
+
 class TestSum(unittest.TestCase):
 
     def test_sum(self):

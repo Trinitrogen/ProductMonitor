@@ -7,6 +7,7 @@ class Website:
 
     def checkstock(self):
         print(f'Checking {self.storename} for {self.productname}')
+        return True
 
     def returnzero(self):
         return 0
