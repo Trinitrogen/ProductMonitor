@@ -1,3 +1,5 @@
+import requests
+
 class Website:
     def __init__(self, storename, storeurl, productname, instockstring):
         self.storename = storename
@@ -7,12 +9,13 @@ class Website:
 
     def checkstock(self):
         print(f'Checking {self.storename} for {self.productname}')
-        return True
+        website = requests.get(self.storeurl)
+        return (self.instockstring in website.text)
 
     def returnzero(self):
         return 0
 
 if __name__ == "__main__":
-    site = Website('Natchezz', 'www.google.com', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+    site = Website('GitHub', 'https://github.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
     site.checkstock()
 

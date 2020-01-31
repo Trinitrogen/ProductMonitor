@@ -7,7 +7,7 @@ class TestWebsiteClass(unittest.TestCase):
    
     def test_WebsiteReturnZero(self):
         #Arrange
-        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
         #Act
         result = site.returnzero()
         #Assert
@@ -15,43 +15,51 @@ class TestWebsiteClass(unittest.TestCase):
 
     def test_WebsiteStoreName(self):
         #Arrange
-        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
         #Act
         result = site.storename
         #Assert
-        self.assertEqual(result, 'Natchezz')
+        self.assertEqual(result, 'Github Test - In Stock')
 
     def test_WebsiteStoreUrl(self):
         #Arrange
-        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
         #Act
         result = site.storeurl
         #Assert
-        self.assertEqual(result, 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html')
+        self.assertEqual(result, 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html')
 
     def test_WebsiteProductName(self):
         #Arrange
-        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
         #Act
         result = site.productname
         #Assert
-        self.assertEqual(result, 'Varget 8#')
+        self.assertEqual(result, 'Test - In Stock')
 
     def test_WebsiteInStockString(self):
         #Arrange
-        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
         #Act
         result = site.instockstring
         #Assert
-        self.assertEqual(result, '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        self.assertEqual(result, 'The Product is IN STOCK')
 
     def test_WebsiteCheckInStock(self):
         #Arrange
-        site = Website('Natchezz', 'https://www.natchezss.com/hodgdon-extreme-varget-rifle-powder-8-lbs.html', 'Varget 8#', '<p class="availability in-stock">Availability: <span>In stock</span></p>')
+        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
         #Act
         result = site.checkstock()
         #Assert
         self.assertEqual(result, True)
+
+    def test_WebsiteCheckOutOfStock(self):
+        #Arrange
+        site = Website('Github Test - Out Of Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/OutOfStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
+        #Act
+        result = site.checkstock()
+        #Assert
+        self.assertEqual(result, False)
 
 class TestSum(unittest.TestCase):
 
