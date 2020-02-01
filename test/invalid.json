@@ -1,0 +1,13 @@
+{
+    "Product": "H4350",,
+    "Enabled": true,
+    "URLs": {
+      "Google":"https://www.google.com",
+      "Github":"www.github.com",
+      "Allstate":"www.allstate.com"
+      },
+    "Numbers": {
+      "Alice":"123456789",
+      "Bob":"987654321"
+    }
+  }

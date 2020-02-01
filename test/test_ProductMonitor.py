@@ -2,32 +2,46 @@ import unittest
 import json
 import ProductMonitor
 from ProductMonitor import Website
+    
 
+class TestValidateJSON_Valid(unittest.TestCase):
+    '''Test validatejson method on valid json'''
+    def test_ValidateJson(self):
+        test_json = 'test/valid.json'
+        result = ProductMonitor.ValidateJSON(test_json)
+        self.assertEqual(result, True)
+
+class TestValidateJSON_Invalid(unittest.TestCase):
+    '''Test validatejson method on invalid json'''
+    def test_ValidateJson(self):
+        test_json = 'test/invalid.json'
+        result = ProductMonitor.ValidateJSON(test_json)
+        self.assertEqual(result, False)
 
 class TestImportJSON(unittest.TestCase):
     def test_JSONImportProduct(self):
         '''Import JSON, test the Product Field'''
-        test_json = 'test/test.json'
+        test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
         self.assertEqual(data['Product'], 'H4350')
 
     def test_JSONImportEnabled(self):
         '''Import JSON, test the Product Field'''
-        test_json = 'test/test.json'
+        test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
         self.assertEqual(data['Enabled'], True)
 
     def test_JSONImportURLs(self):
         '''Import JSON, make sure the URLs Dictionary is correct'''
         urls = {'Google': 'https://www.google.com', 'Github': 'www.github.com', 'Allstate': 'www.allstate.com'}
-        test_json = 'test/test.json'
+        test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
         self.assertEqual(data['URLs'], urls)
     
     def test_JSONImportNumbers(self):
         '''Import JSON, make sure the Numbers Dictionary is correct'''
         numbers = {'Alice': '123456789', 'Bob': '987654321'}
-        test_json = 'test/test.json'
+        test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
         self.assertEqual(data['Numbers'], numbers)
 
