@@ -21,6 +21,15 @@ def ImportJSON(filename):
     data = json.load(file)
     return data
 
+def ValidateJSON(filename):
+    '''Confirm JSON is valid before doing anything else'''
+    file = open(filename)
+    try:
+        json_object = json.load(file)
+    except ValueError as e:
+        return False
+    return True
+
 if __name__ == "__main__":
     site = Website('GitHub', 'https://github.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
     site.checkstock()
