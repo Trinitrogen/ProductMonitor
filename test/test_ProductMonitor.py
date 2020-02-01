@@ -1,17 +1,38 @@
 import unittest
+import json
+import ProductMonitor
 from ProductMonitor import Website
 
+
+class TestImportJSON(unittest.TestCase):
+    def test_JSONImportProduct(self):
+        '''Import JSON, test the Product Field'''
+        test_json = 'test/test.json'
+        data = ProductMonitor.ImportJSON(test_json)
+        self.assertEqual(data['Product'], 'H4350')
+
+    def test_JSONImportEnabled(self):
+        '''Import JSON, test the Product Field'''
+        test_json = 'test/test.json'
+        data = ProductMonitor.ImportJSON(test_json)
+        self.assertEqual(data['Enabled'], True)
+
+    def test_JSONImportURLs(self):
+        '''Import JSON, make sure the URLs Dictionary is correct'''
+        urls = {'Google': 'https://www.google.com', 'Github': 'www.github.com', 'Allstate': 'www.allstate.com'}
+        test_json = 'test/test.json'
+        data = ProductMonitor.ImportJSON(test_json)
+        self.assertEqual(data['URLs'], urls)
+    
+    def test_JSONImportNumbers(self):
+        '''Import JSON, make sure the Numbers Dictionary is correct'''
+        numbers = {'Alice': '123456789', 'Bob': '987654321'}
+        test_json = 'test/test.json'
+        data = ProductMonitor.ImportJSON(test_json)
+        self.assertEqual(data['Numbers'], numbers)
+
+
 class TestWebsiteClass(unittest.TestCase):
-    def test_baseline(self):
-        self.assertEqual(0,0)
-   
-    def test_WebsiteReturnZero(self):
-        #Arrange
-        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.returnzero()
-        #Assert
-        self.assertEqual(result, 0)
 
     def test_WebsiteStoreName(self):
         #Arrange
