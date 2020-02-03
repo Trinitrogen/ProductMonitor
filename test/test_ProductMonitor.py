@@ -2,18 +2,40 @@ import unittest
 import json
 import ProductMonitor
 from ProductMonitor import Website
-    
+from ProductMonitor import Product
 
-class TestValidateJSON_Valid(unittest.TestCase):
-    '''Test validatejson method on valid json'''
-    def test_ValidateJson(self):
+
+class TestProductClass(unittest.TestCase):
+    def test_WebsiteInStockAlertPositive(self):
+        data = ProductMonitor.ImportJSON('test/in_stock_test.json')
+        product = data['Product']
+        urls = data['URLs']
+        numbers = data['Numbers']
+
+        product = Product(product, urls, numbers)
+
+        self.assertEqual(product.checkstock(), True)
+
+    def test_WebsiteInStockAlertNegative(self):
+        data = ProductMonitor.ImportJSON('test/out_of_stock_test.json')
+        product = data['Product']
+        urls = data['URLs']
+        numbers = data['Numbers']
+
+        product = Product(product, urls, numbers)
+
+        self.assertEqual(product.checkstock(), False)
+
+
+class TestValidateJSON(unittest.TestCase):
+    def test_ValidateJson_Valid_Input(self):
+        '''Test validatejson method on valid json'''
         test_json = 'test/valid.json'
         result = ProductMonitor.ValidateJSON(test_json)
         self.assertEqual(result, True)
 
-class TestValidateJSON_Invalid(unittest.TestCase):
-    '''Test validatejson method on invalid json'''
-    def test_ValidateJson(self):
+    def test_ValidateJson_Invalid_Input(self):
+        '''Test validatejson method on invalid json'''
         test_json = 'test/invalid.json'
         result = ProductMonitor.ValidateJSON(test_json)
         self.assertEqual(result, False)
@@ -23,7 +45,7 @@ class TestImportJSON(unittest.TestCase):
         '''Import JSON, test the Product Field'''
         test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
-        self.assertEqual(data['Product'], 'H4350')
+        self.assertEqual(data['Product'], 'Test Product')
 
     def test_JSONImportEnabled(self):
         '''Import JSON, test the Product Field'''
@@ -33,7 +55,7 @@ class TestImportJSON(unittest.TestCase):
 
     def test_JSONImportURLs(self):
         '''Import JSON, make sure the URLs Dictionary is correct'''
-        urls = {'Google': 'https://www.google.com', 'Github': 'www.github.com', 'Allstate': 'www.allstate.com'}
+        urls = {'Github - In Stock': ['https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html','The Product is IN STOCK'],'Github Test - Out Of Stock': ['https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/OutOfStockExample.html','The Product is IN STOCK']}
         test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
         self.assertEqual(data['URLs'], urls)
@@ -47,6 +69,15 @@ class TestImportJSON(unittest.TestCase):
 
 
 class TestWebsiteClass(unittest.TestCase):
+    def test_WebsiteInStockAlert(self):
+        data = ProductMonitor.ImportJSON('test/in_stock_test.json')
+        product = data['Product']
+        urls = data['URLs']
+        numbers = data['Numbers']
+
+        product = Product(product, urls, numbers)
+
+        self.assertEqual(product.checkstock(), True)
 
     def test_WebsiteStoreName(self):
         #Arrange
@@ -96,6 +127,16 @@ class TestWebsiteClass(unittest.TestCase):
         #Assert
         self.assertEqual(result, False)
 
+class TestSum(unittest.TestCase):
+
+    def test_sum(self):
+        self.assertEqual(sum([1, 2, 3]), 6, "Should be 6")
+
+    def test_sum_tuple(self):
+        self.assertEqual(sum((1, 2, 3)), 6, "Should be 6")
+
+if __name__ == '__main__':
+    unittest.main()
 class TestSum(unittest.TestCase):
 
     def test_sum(self):
