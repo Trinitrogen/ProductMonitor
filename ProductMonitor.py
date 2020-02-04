@@ -1,6 +1,8 @@
 import requests
 import json
 import sys
+import config
+import os
 from twilio.rest import Client
 
 class Product:
@@ -20,6 +22,7 @@ class Product:
             website = requests.get(current_url)
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
+                self.disableproduct
                 returnvalue = True
         
         return returnvalue
@@ -28,6 +31,12 @@ class Product:
         '''If product is found, iterate through product numbers and send SMS'''
         for key,value in self.productnumbers.items():
             print(f'Messaging {key} at {value} here is the link {current_url}')
+            SendTwilioMessage(config.account_sid, config.auth_token, config.source, value,self.productname, current_url)
+    
+    def disableproduct(self):
+        '''If product is found in stock, disable it to prevent future notification'''
+        f= open("trigger","w+")
+        f.close()
 
 class Website:
     def __init__(self, storename, storeurl, productname, instockstring):
@@ -41,7 +50,7 @@ class Website:
         website = requests.get(self.storeurl)
         return (self.instockstring in website.text)
 
-def SendTwilioMessage(account_sid, auth_token, source, destination, prodcut, url):
+def SendTwilioMessage(account_sid, auth_token, source, destination, product, url):
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
@@ -68,7 +77,11 @@ def ValidateJSON(filename):
     return True
 
 if __name__ == "__main__":
-    filename = 'test/valid.json'
+    if os.path.isfile('trigger'):
+        print ("STOPPING - Trigger File Exists")
+        quit()
+
+    filename = 'ProductExample.json'
     if ValidateJSON(filename):
         data = ImportJSON(filename)
         print(f'Imported {filename}')
@@ -76,10 +89,11 @@ if __name__ == "__main__":
         print(f'{filename} is not valid json format, quitting')
         quit()
 
-    product = data['Product']
+    productname = data['Product']
     urls = data['URLs']
     numbers = data['Numbers']
 
-    product = Product(product, urls, numbers)
-    product.checkstock()
+    product = Product(productname, urls, numbers)
+    result = product.checkstock()
+    print(f'Result of CheckStock() for {productname}: {result}')
 
