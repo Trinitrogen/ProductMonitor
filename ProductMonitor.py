@@ -22,7 +22,7 @@ class Product:
             website = requests.get(current_url)
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
-                self.disableproduct
+                self.disableproduct()
                 returnvalue = True
         
         return returnvalue
