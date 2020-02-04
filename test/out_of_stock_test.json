@@ -1,0 +1,11 @@
+{
+  "Product": "Test Product",
+  "Enabled": true,
+  "URLs": {
+    "Github Test - Out Of Stock":["https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/OutOfStockExample.html","The Product is IN STOCK"]
+    },
+  "Numbers": {
+    "Alice":"123456789",
+    "Bob":"987654321"
+  }
+}

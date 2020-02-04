@@ -1,6 +1,7 @@
 #User Added
 settings.json
-practice*
+ignore_*
+config.py
 
 #Temporary
 product.json 
