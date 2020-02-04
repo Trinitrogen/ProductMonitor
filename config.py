@@ -1,1 +1,7 @@
-api_key = "APIKEY"
+account_sid = ""
+auth_token = ""
+source = ""
+test_account_sid = ""
+test_auth_token = ""
+test_source = "+"
+test_destination = ""
