@@ -48,6 +48,8 @@ def SendTwilioMessage(account_sid, auth_token, source, destination, prodcut, url
         to=destination, 
         from_=source,
         body="Product Found At " + url)
+    
+    return message
 
 
 def ImportJSON(filename):

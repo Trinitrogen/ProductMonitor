@@ -3,7 +3,13 @@ import json
 import ProductMonitor
 from ProductMonitor import Website
 from ProductMonitor import Product
+import config
 
+
+class TestSendTwilioMessage(unittest.TestCase):
+    def test_Baseline(self):
+        result = ProductMonitor.SendTwilioMessage(config.test_account_sid, config.test_auth_token, config.test_source, config.test_destination, 'Test Product', 'www.github.com')
+        self.assertEqual(result.error_code, None)
 
 class TestProductClass(unittest.TestCase):
     def test_WebsiteInStockAlertPositive(self):
@@ -25,6 +31,7 @@ class TestProductClass(unittest.TestCase):
         product = Product(product, urls, numbers)
 
         self.assertEqual(product.checkstock(), False)
+    
 
 
 class TestValidateJSON(unittest.TestCase):
