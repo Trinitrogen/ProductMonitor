@@ -10,6 +10,7 @@ class Product:
         self.productnumbers = productnumbers
 
     def checkstock(self):
+        '''Iterates through product URLs, downloads site, and checks for instock'''
         returnvalue = False
         for key,value in self.producturls.items():
             current_site = key
@@ -24,7 +25,9 @@ class Product:
         return returnvalue
 
     def instockalert(self, current_site, current_url):
-        print(f'Found {self.productname} at {current_site} here is the link {current_url}')
+        '''If product is found, iterate through product numbers and send SMS'''
+        for key,value in self.productnumbers.items():
+            print(f'Messaging {key} at {value} here is the link {current_url}')
 
 class Website:
     def __init__(self, storename, storeurl, productname, instockstring):
