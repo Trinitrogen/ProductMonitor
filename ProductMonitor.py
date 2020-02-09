@@ -3,6 +3,7 @@ import json
 import sys
 import config
 import os
+import glob
 from twilio.rest import Client
 
 class Product:
@@ -52,11 +53,12 @@ class Website:
 
 def SendTwilioMessage(account_sid, auth_token, source, destination, product, url):
     client = Client(account_sid, auth_token)
+    notification = product + " Found at " + url
 
     message = client.messages.create(
         to=destination, 
         from_=source,
-        body="Product Found At " + url)
+        body="Product Found " + url)
     
     return message
 
@@ -76,24 +78,39 @@ def ValidateJSON(filename):
         return False
     return True
 
+def OpenProductDir(directory):
+    product_dir = os.path.abspath(os.path.dirname(sys.argv[0])) + directory
+    product_jsons = glob.glob(product_dir + '/*.json')
+    return product_jsons
+
+
 if __name__ == "__main__":
     if os.path.isfile('trigger'):
         print ("STOPPING - Trigger File Exists")
         quit()
 
-    filename = 'ProductExample.json'
-    if ValidateJSON(filename):
-        data = ImportJSON(filename)
-        print(f'Imported {filename}')
-    else:
-        print(f'{filename} is not valid json format, quitting')
-        quit()
 
-    productname = data['Product']
+    products = OpenProductDir('/products')
+
+    for filename in products:
+        if ValidateJSON(filename):
+            data = ImportJSON(filename)
+            print(f'Imported {filename}')
+            productname = data['Product']
+            urls = data['URLs']
+            numbers = data['Numbers']
+            product = Product(productname, urls, numbers)
+            result = product.checkstock()
+            print(f'Result of CheckStock() for {productname}: {result}')
+        else:
+            print(f'{filename} is not valid json format, quitting')
+            quit()
+
+'''    productname = data['Product']
     urls = data['URLs']
     numbers = data['Numbers']
 
     product = Product(productname, urls, numbers)
     result = product.checkstock()
-    print(f'Result of CheckStock() for {productname}: {result}')
+    print(f'Result of CheckStock() for {productname}: {result}')'''
 
