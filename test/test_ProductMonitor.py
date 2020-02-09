@@ -6,8 +6,15 @@ from ProductMonitor import Product
 import config
 
 
+
+class TestOpenProductDir(unittest.TestCase):
+    def test_OpenProductDir(self):
+        result = ProductMonitor.OpenProductDir('/test')
+        comparison = ['/home/vscode/python/ProductMonitor/test/out_of_stock_test.json', '/home/vscode/python/ProductMonitor/test/in_stock_test.json', '/home/vscode/python/ProductMonitor/test/ignore_valid_copy_backup.json', '/home/vscode/python/ProductMonitor/test/invalid.json', '/home/vscode/python/ProductMonitor/test/valid.json', '/home/vscode/python/ProductMonitor/test/ProductExample.json']
+        self.assertEqual(result, comparison)
+
 class TestSendTwilioMessage(unittest.TestCase):
-    def test_Baseline(self):
+    def test_SendTwilioMessage(self):
         result = ProductMonitor.SendTwilioMessage(config.test_account_sid, config.test_auth_token, config.test_source, config.test_destination, 'Test Product', 'www.github.com')
         self.assertEqual(result.error_code, None)
 
@@ -73,84 +80,6 @@ class TestImportJSON(unittest.TestCase):
         test_json = 'test/valid.json'
         data = ProductMonitor.ImportJSON(test_json)
         self.assertEqual(data['Numbers'], numbers)
-
-
-class TestWebsiteClass(unittest.TestCase):
-    def test_WebsiteInStockAlert(self):
-        data = ProductMonitor.ImportJSON('test/in_stock_test.json')
-        product = data['Product']
-        urls = data['URLs']
-        numbers = data['Numbers']
-
-        product = Product(product, urls, numbers)
-
-        self.assertEqual(product.checkstock(), True)
-
-    def test_WebsiteStoreName(self):
-        #Arrange
-        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.storename
-        #Assert
-        self.assertEqual(result, 'Github Test - In Stock')
-
-    def test_WebsiteStoreUrl(self):
-        #Arrange
-        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.storeurl
-        #Assert
-        self.assertEqual(result, 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html')
-
-    def test_WebsiteProductName(self):
-        #Arrange
-        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.productname
-        #Assert
-        self.assertEqual(result, 'Test - In Stock')
-
-    def test_WebsiteInStockString(self):
-        #Arrange
-        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.instockstring
-        #Assert
-        self.assertEqual(result, 'The Product is IN STOCK')
-
-    def test_WebsiteCheckInStock(self):
-        #Arrange
-        site = Website('Github Test - In Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/InStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.checkstock()
-        #Assert
-        self.assertEqual(result, True)
-
-    def test_WebsiteCheckOutOfStock(self):
-        #Arrange
-        site = Website('Github Test - Out Of Stock', 'https://GitHub.com/Trinitrogen/ProductMonitor/blob/master/test/OutOfStockExample.html', 'Test - In Stock', 'The Product is IN STOCK')
-        #Act
-        result = site.checkstock()
-        #Assert
-        self.assertEqual(result, False)
-
-class TestSum(unittest.TestCase):
-
-    def test_sum(self):
-        self.assertEqual(sum([1, 2, 3]), 6, "Should be 6")
-
-    def test_sum_tuple(self):
-        self.assertEqual(sum((1, 2, 3)), 6, "Should be 6")
-
-if __name__ == '__main__':
-    unittest.main()
-class TestSum(unittest.TestCase):
-
-    def test_sum(self):
-        self.assertEqual(sum([1, 2, 3]), 6, "Should be 6")
-
-    def test_sum_tuple(self):
-        self.assertEqual(sum((1, 2, 3)), 6, "Should be 6")
-
+    
 if __name__ == '__main__':
     unittest.main()
