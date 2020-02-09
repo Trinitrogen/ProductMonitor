@@ -1,0 +1,11 @@
+certifi==2019.11.28
+chardet==3.0.4
+idna==2.8
+pkg-resources==0.0.0
+PyJWT==1.7.1
+pytz==2019.3
+requests==2.22.0
+rope==0.16.0
+six==1.14.0
+twilio==6.35.3
+urllib3==1.25.8
