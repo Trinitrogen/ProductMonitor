@@ -4,6 +4,7 @@ import sys
 import config
 import os
 import glob
+import logging
 from twilio.rest import Client
 
 class Product:
@@ -85,8 +86,12 @@ def OpenProductDir(directory):
 
 
 if __name__ == "__main__":
+
+    logging.basicConfig(level=logging.DEBUG,filename='log.txt',filemode='w', format='%(levelname)s - %(message)s')
+    
     if os.path.isfile('trigger'):
         print ("STOPPING - Trigger File Exists")
+        logging.error("STOPPING - Trigger File Exists")
         quit()
 
 
@@ -95,22 +100,16 @@ if __name__ == "__main__":
     for filename in products:
         if ValidateJSON(filename):
             data = ImportJSON(filename)
-            print(f'Imported {filename}')
+            logging.info(f'Imported {filename}')
             productname = data['Product']
             urls = data['URLs']
             numbers = data['Numbers']
             product = Product(productname, urls, numbers)
             result = product.checkstock()
-            print(f'Result of CheckStock() for {productname}: {result}')
+            #print(f'Result of CheckStock() for {productname}: {result}')
+            logging.info(f'Result of CheckStock() for {productname}: {result}')
         else:
-            print(f'{filename} is not valid json format, quitting')
+            #print(f'{filename} is not valid json format, quitting')
+            logging.error(f'{filename} is not valid json format, quitting')
             quit()
-
-'''    productname = data['Product']
-    urls = data['URLs']
-    numbers = data['Numbers']
-
-    product = Product(productname, urls, numbers)
-    result = product.checkstock()
-    print(f'Result of CheckStock() for {productname}: {result}')'''
 

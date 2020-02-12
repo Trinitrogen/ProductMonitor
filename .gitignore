@@ -2,6 +2,7 @@
 settings.json
 ignore_*
 config.py
+log.txt
 
 #Temporary
 product.json 
