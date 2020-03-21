@@ -21,7 +21,10 @@ class Product:
             current_url = value[0]
             current_instock_string = value[1]
 
-            website = requests.get(current_url)
+            user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'
+            headers = {'User-Agent': user_agent}
+
+            website = requests.get(current_url,headers=headers)
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
                 self.disableproduct()
@@ -49,7 +52,10 @@ class Website:
 
     def checkstock(self):
         '''Requests site, searches html and returns True if instockstring is found'''
-        website = requests.get(self.storeurl)
+        user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'
+        headers = {'User-Agent': user_agent}
+        website = requests.get(self.storeurl,headers=headers)
+
         return (self.instockstring in website.text)
 
 def SendTwilioMessage(account_sid, auth_token, source, destination, product, url):
