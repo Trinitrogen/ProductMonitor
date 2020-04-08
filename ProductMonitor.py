@@ -39,7 +39,7 @@ class Product:
             SendTwilioMessage(config.account_sid, config.auth_token, config.source, value,self.productname, current_url)
     
     def disableproduct(self):
-        '''Legacy Method of disabling products'''
+        '''Legacy Method of disabling products '''
         f= open("trigger","w+")
         f.close()
 
