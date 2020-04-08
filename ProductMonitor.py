@@ -5,6 +5,7 @@ import config
 import os
 import glob
 import logging
+import shutil
 from twilio.rest import Client
 
 class Product:
@@ -27,7 +28,6 @@ class Product:
             website = requests.get(current_url,headers=headers)
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
-                self.disableproduct()
                 returnvalue = True
         
         return returnvalue
@@ -39,11 +39,11 @@ class Product:
             SendTwilioMessage(config.account_sid, config.auth_token, config.source, value,self.productname, current_url)
     
     def disableproduct(self):
-        '''If product is found in stock, disable it to prevent future notification'''
+        '''Legacy Method of disabling products '''
         f= open("trigger","w+")
         f.close()
 
-class Website:
+    '''class Website:
     def __init__(self, storename, storeurl, productname, instockstring):
         self.storename = storename
         self.storeurl = storeurl
@@ -51,12 +51,12 @@ class Website:
         self.instockstring = instockstring
 
     def checkstock(self):
-        '''Requests site, searches html and returns True if instockstring is found'''
+        ''Requests site, searches html and returns True if instockstring is found'
         user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'
         headers = {'User-Agent': user_agent}
         website = requests.get(self.storeurl,headers=headers)
 
-        return (self.instockstring in website.text)
+        return (self.instockstring in website.text)'''
 
 def SendTwilioMessage(account_sid, auth_token, source, destination, product, url):
     client = Client(account_sid, auth_token)
@@ -90,6 +90,12 @@ def OpenProductDir(directory):
     product_jsons = glob.glob(product_dir + '/*.json')
     return product_jsons
 
+def DisableProduct(filename):
+    source = os.getcwd() + filename
+    destination = os.path.dirname(os.path.abspath(__file__)) + '/products/disabled/'
+    shutil.move(filename, destination)
+    logging.info(f'Moving {filename} to {destination}')
+
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -100,7 +106,6 @@ if __name__ == "__main__":
         print ("STOPPING - Trigger File Exists")
         logging.error("STOPPING - Trigger File Exists")
         quit()
-
 
     products = OpenProductDir('/products')
 
@@ -113,10 +118,11 @@ if __name__ == "__main__":
             numbers = data['Numbers']
             product = Product(productname, urls, numbers)
             result = product.checkstock()
-            #print(f'Result of CheckStock() for {productname}: {result}')
             logging.info(f'Result of CheckStock() for {productname}: {result}')
+
+            if result:
+                DisableProduct(filename)
+
         else:
-            #print(f'{filename} is not valid json format, quitting')
             logging.error(f'{filename} is not valid json format, quitting')
             quit()
-
