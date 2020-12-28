@@ -6,6 +6,7 @@ import os
 import glob
 import logging
 import shutil
+import random
 from twilio.rest import Client
 
 class Product:
@@ -21,11 +22,27 @@ class Product:
             current_site = key
             current_url = value[0]
             current_instock_string = value[1]
-
-            user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:72.0) Gecko/20100101 Firefox/72.0'
+            top_user_agents = [
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0",
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36",
+                                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/12.1 Safari/605.1.15",
+                                "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+                                "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
+                                "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0",
+                                "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36"
+                                ]
+            user_agent = random.choice(top_user_agents)
+            logging.info(f'User Agent: {user_agent}')
             headers = {'User-Agent': user_agent}
 
             website = requests.get(current_url,headers=headers)
+
+            if website.status_code != 200:
+                logging.error(f'Return Code {website.status_code}')
+
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
                 returnvalue = True
@@ -100,7 +117,7 @@ def DisableProduct(filename):
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-    logging.basicConfig(level=logging.DEBUG,filename='log.txt',filemode='w', format='%(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.DEBUG,filename='log.txt', format='%(levelname)s - %(asctime)s - %(message)s',datefmt='%d-%b-%y %H:%M:%S')
     
     if os.path.isfile('trigger'):
         print ("STOPPING - Trigger File Exists")
