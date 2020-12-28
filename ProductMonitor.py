@@ -39,6 +39,10 @@ class Product:
             headers = {'User-Agent': user_agent}
 
             website = requests.get(current_url,headers=headers)
+
+            if website.status_code != 200:
+                logging.error(f'Return Code {website.status_code}')
+
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
                 returnvalue = True
@@ -113,7 +117,7 @@ def DisableProduct(filename):
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-    logging.basicConfig(level=logging.DEBUG,filename='log.txt',filemode='w', format='%(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.DEBUG,filename='log.txt', format='%(levelname)s - %(asctime)s - %(message)s',datefmt='%d-%b-%y %H:%M:%S')
     
     if os.path.isfile('trigger'):
         print ("STOPPING - Trigger File Exists")
