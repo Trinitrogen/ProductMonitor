@@ -41,7 +41,7 @@ class Product:
             website = requests.get(current_url,headers=headers)
 
             if website.status_code != 200:
-                logging.error(f'Return Code {website.status_code}')
+                logging.error(f'Return Code {website.status_code} from {current_url}')
 
             if current_instock_string in website.text:
                 self.instockalert(current_site, current_url)
