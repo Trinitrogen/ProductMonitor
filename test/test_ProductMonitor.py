@@ -1,7 +1,6 @@
 import unittest
 import json
 import ProductMonitor
-from ProductMonitor import Website
 from ProductMonitor import Product
 import config
 
@@ -15,7 +14,7 @@ class TestOpenProductDir(unittest.TestCase):
 
 class TestSendTwilioMessage(unittest.TestCase):
     def test_SendTwilioMessage(self):
-        result = ProductMonitor.SendTwilioMessage(config.test_account_sid, config.test_auth_token, config.test_source, config.test_destination, 'Test Product', 'www.github.com')
+        result = ProductMonitor.SendTwilioMessage(config.test_account_sid, config.test_auth_token, config.test_source, "+15005550006", 'Test Product', 'www.github.com')
         self.assertEqual(result.error_code, None)
 
 class TestProductClass(unittest.TestCase):
