@@ -62,14 +62,17 @@ class Product:
         f= open("trigger","w+")
         f.close()
 
-def SendTwilioMessage(account_sid, auth_token, source, destination, product, url):
+def SendTwilioMessage(account_sid, auth_token, source, destination, productname, url):
     client = Client(account_sid, auth_token)
-    notification = product + " Found at " + url
 
-    message = client.messages.create(
-        to=destination, 
-        from_=source,
-        body="Product Found " + url)
+    try:
+        message = client.messages.create(
+            to=destination, 
+            from_=source,
+            body=productname + " Found " + url)
+    except:
+        e = sys.exc_info()[0]
+        logger.critical(f"{e}")
     
     return message
 
@@ -102,9 +105,6 @@ def DisableProduct(filename):
 
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-    #logging.basicConfig(level=logging.DEBUG,filename='log.txt', format='%(levelname)s - %(asctime)s - %(message)s',datefmt='%d-%b-%y %H:%M:%S')
-    #SetupRotatingLog()
 
     logger = logging.getLogger("Rotating Log")
     logger.setLevel(logging.DEBUG)
