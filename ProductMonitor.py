@@ -37,7 +37,7 @@ class Product:
                                 "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36"
                                 ]
             user_agent = random.choice(top_user_agents)
-            logger.info(f'User Agent: {user_agent}')
+            logger.info(f'Accessing: {current_url} with User Agent: {user_agent}')
             headers = {'User-Agent': user_agent}
 
             website = requests.get(current_url,headers=headers)
@@ -106,10 +106,20 @@ def DisableProduct(filename):
 if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+    #Create Logger
     logger = logging.getLogger("Rotating Log")
     logger.setLevel(logging.DEBUG)
+
+    #Setup Rotation and Formatting
     handler = TimedRotatingFileHandler('log.txt', when='d',interval=1,backupCount=7)
     logger.addHandler(handler)
+    # create console handler and formatter
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    ch.setFormatter(formatter)
+    logger.addHandler(ch)
+
 
 
     if os.path.isfile('trigger'):
