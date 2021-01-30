@@ -112,14 +112,14 @@ if __name__ == "__main__":
 
     #Setup Rotation and Formatting
     handler = TimedRotatingFileHandler('log.txt', when='d',interval=1,backupCount=7)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
     logger.addHandler(handler)
     # create console handler and formatter
     ch = logging.StreamHandler()
     ch.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     ch.setFormatter(formatter)
     logger.addHandler(ch)
-    handler.setFormatter(formatter)
 
 
     if os.path.isfile('trigger'):
