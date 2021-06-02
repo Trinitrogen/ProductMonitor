@@ -8,4 +8,4 @@ requests==2.22.0
 rope==0.16.0
 six==1.14.0
 twilio==6.35.3
-urllib3==1.25.8
+urllib3==1.26.5
